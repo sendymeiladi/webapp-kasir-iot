@@ -1,11 +1,12 @@
 <?php
+  require "conf/database.php";
+
   include "header.php";
 ?>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
   <?php 
-        include "database.php";
         include "topnav.php";
         include "sidebar.php";
 
