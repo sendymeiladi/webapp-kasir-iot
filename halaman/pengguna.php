@@ -1,34 +1,40 @@
 <?php
-
   $alert = "";
 
-  if(isset($_POST['tambah'])){
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    $sql_tambah = "INSERT INTO pengguna (username, password, nama_lengkap) VALUES ('{$_POST['username']}','$password', '{$_POST['nama_lengkap']}')";
-    mysqli_query($db, $sql_tambah);
-    $alert = "tambah";
-  }
-
-  if(isset($_GET['hapus'])){
-    $sql_hapus = "UPDATE pengguna SET aktif = '0' WHERE username = '{$_GET['hapus']}'";
-    mysqli_query($db, $sql_hapus);
-    $alert = "hapus";
-  }
-
-  if(isset($_POST['ubah'])){
-    
-    if($_POST['password'] == ""){
-      $sql_ubah = "UPDATE pengguna SET username = '{$_POST['username']}', nama_lengkap = '{$_POST['nama_lengkap']}' WHERE username = '{$_POST['old_username']}'";
-    } else {
+  // tambah data
+  if (isset($_POST['tambah'])) {
+      $username = $_POST['username'];
       $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-      $sql_ubah = "UPDATE pengguna SET username = '{$_POST['username']}', password = '$password', nama_lengkap = '{$_POST['nama_lengkap']}' WHERE username = '{$_POST['old_username']}'";
-    }
-    mysqli_query($db, $sql_ubah);
-    $alert = "ubah";
+      $nama_pegawai = $_POST['nama_pegawai'];
+  
+      $sql_tambah = "INSERT INTO pengguna (username, password, nama_pegawai) VALUES ('$username', '$password', '$nama_pegawai')";
+      mysqli_query($db, $sql_tambah);
+      $alert = "tambah";
   }
 
-  $sql = "SELECT * FROM  pengguna WHERE aktif = '1'";
+  //hapus data
+if(isset($_GET['hapus'])){
+  $sql_hapus = "UPDATE pengguna SET aktif ='0' WHERE username = '{$_GET['hapus']}'";
+  mysqli_query($db, $sql_hapus);
+  $alert = "hapus";
+}
+
+// ubah data
+if(isset($_POST['ubah'])){
+    
+  if($_POST['password'] == ""){
+    $sql_ubah = "UPDATE pengguna SET username = '{$_POST['username']}', nama_pegawai = '{$_POST['nama_pegawai']}' WHERE username = '{$_POST['old_username']}'";
+  } else {
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $sql_ubah = "UPDATE pengguna SET username = '{$_POST['username']}', password = '$password', nama_pegawai = '{$_POST['nama_pegawai']}' WHERE username = '{$_POST['old_username']}'";
+  }
+  echo $sql_ubah;
+  mysqli_query($db, $sql_ubah);
+  $alert = "ubah";
+}
+
+
+  $sql = "SELECT * FROM pengguna WHERE aktif = 1";
   $result = mysqli_query($db, $sql);
 ?>
 
@@ -38,97 +44,69 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Pengguna</h1>
+            <h1 class="m-0">Data Pengguna</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-          <?php if($alert == "tambah") {?>
-          <div class="alert alert-success alert-dismissible">
+        <!-- Alert -->
+          <?php if ($alert == "tambah") { ?>
+            <div class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="icon fas fa-check"></i> Berhasil</h5>
             Data Berhasil ditambahkan.
           </div>
-          <?php } else if($alert == "hapus"){ ?>
-          <div class="alert alert-danger alert-dismissible">
+          <?php } else if ($alert == "hapus") { ?>
+            <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="icon fas fa-check"></i>Berhasil</h5>
             Data Berhasil dihapus.
-          </div>
-          <?php }else if($alert == "ubah"){ ?>
-          <div class="alert alert-warning alert-dismissible">
+            </div>
+          <?php } else if ($alert == "ubah") { ?>
+            <div class="alert alert-primary alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="icon fas fa-check"></i>Berhasil</h5>
             Data Berhasil diubah.
-          </div>
+            </div>
           <?php } ?>
         <div class="row">
           <!-- /.col-md-12 -->
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary card-outline">
               <div class="card-header">
-                <h5 class="m-0">Pengguna Terdaftar</h5>
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">Tambah Data</button>
               </div>
               <div class="card-body">
               <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Username</th>
-                    <th>Nama Lengkap</th>
-                    <th></th>
+                    <th>Nama Pegawai</th>
+                    <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php while($row = mysqli_fetch_array($result)){ ?>
                   <tr>
-                    <td><?php echo $row['username']?></td>
-                    <td><?php echo $row['nama_lengkap']?></td>
-                    <td><a href="?hal=pengguna_ubah&ubah=<?php echo $row['username']?>" class="btn btn-warning">Ubah</a> <a href="?hal=pengguna&hapus=<?php echo $row['username']?>" class="btn btn-danger">Hapus</a></td>
+                    <td><?php echo $row['username'] ?></td>
+                    <td><?php echo $row['nama_pegawai'] ?></td>
+                    <td><a href="?hal=pengguna_ubah&ubah=<?php echo $row['username'] ?>" class="btn btn-primary">Ubah</a> <a href="?hal=pengguna&hapus=<?php echo $row['username'] ?>" class="btn btn-danger">Hapus</a></td>
                   </tr>
-                  <?php } ?>
+                  <?php }?>
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Username</th>
-                    <th>Nama Lengkap</th>
-                    <th></th>
+                    <th>username</th>
+                    <th>nama pegawai</th>
+                    <th>Aksi</th>
                   </tr>
                   </tfoot>
                 </table>
 
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h5 class="m-0">Tambah Perangkat Baru</h5>
-              </div>
-              <div class="card-body">
-              <form method="POST" action="?hal=pengguna">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" name="username">
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password">
-                  </div>
-                  <div class="form-group">
-                    <label for="nama_lengkap">Nama Lengkap</label>
-                    <input type="text" class="form-control" name="nama_lengkap">
-                  </div>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" name="tambah">tambah</button>
-                </div>
-              </form>
               </div>
             </div>
           </div>
@@ -139,3 +117,38 @@
     </div>
     <!-- /.content -->
   </div>
+  <!-- Modal -->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Tambah data baru</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" action="">
+            <div class="modal-body">
+              <div class="form-group">
+                    <label>username</label>
+                    <input type="text" class="form-control" placeholder="Masukan username", name="username" required>
+              </div>
+              <div class="form-group">
+                    <label>password</label>
+                    <input type="password" min="0" class="form-control" placeholder="Masukan password", name="pasword" required>
+              </div>
+              <div class="form-group">
+                    <label>Nama pegawai</label>
+                    <input type="text"  class="form-control" placeholder="Masukan nama pegawai", name="nama_pegawai" required>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+              <button type="submit" name="tambah" class="btn btn-success">Tambah</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
