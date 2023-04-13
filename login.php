@@ -3,14 +3,14 @@
   $pesan = "Masukan Username dan Password";
 
   if(isset($_POST['masuk'])){
-    require "database.php";
+    require "conf/database.php";
 
     $sql = "SELECT * FROM pengguna WHERE username='{$_POST['username']}'";
     $data = mysqli_fetch_array(mysqli_query($db, $sql));
 
     if($data){
       if(password_verify($_POST['password'], $data['password'])){
-        $_SESSION['nama_lengkap'] = $data['nama_lengkap'];
+        $_SESSION['nama_pegawai'] = $data['nama_pegawai'];
 
         header("Location: index.php");
       } else {
@@ -24,11 +24,11 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in (v2)</title>
+  <title>Webapp Kasir IoT</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -44,14 +44,14 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="#" class="h1"><b>App </b>Monitoring</a>
+      <a href="#" class="h1"><b>App </b>Kasir IoT</a>
     </div>
     <div class="card-body">
       <p class="login-box-msg"><?php echo $pesan ?></p>
 
       <form action="" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username" name="username">
+          <input type="text" class="form-control" placeholder="Username" name="username" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password">
+          <input type="password" class="form-control" placeholder="Password" name="password" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

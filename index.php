@@ -1,4 +1,5 @@
 <?php
+  require "ceklogin.php";
   require "conf/database.php";
 
   include "header.php";

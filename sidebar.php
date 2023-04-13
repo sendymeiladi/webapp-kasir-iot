@@ -13,7 +13,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Budi Cilok</a>
+          <a href="#" class="d-block"><?php echo $_SESSION['nama_pegawai'] ?></a>
         </div>
       </div>
 
