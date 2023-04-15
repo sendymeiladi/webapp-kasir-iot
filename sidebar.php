@@ -39,6 +39,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="?hal=kasir" class="nav-link">
+              <i class="nav-icon fas fa-cash-register"></i>
+              <p>Kasir</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="?hal=barang" class="nav-link">
               <i class="nav-icon fas fa-truck-loading"></i>
               <p>Barang</p>
