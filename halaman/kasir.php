@@ -11,6 +11,20 @@
 
   }
 
+  if(isset($_POST['bayar'])) {
+    $sql_penjualan = "INSERT INTO penjualan (id_keranjang) VALUES ('{$_POST['id_keranjang']}')";
+
+    $sql_penjualan_detail = "INSERT INTO penjualan_detail (id_keranjang, id_barang, jumlah, harga)
+                              SELECT id_keranjang, id_barang, jumlah, harga
+                              FROM keranjang_detail
+                              WHERE id_keranjang = '{$_POST['id_keranjang']}'";
+    
+    $sql_hapus_keranjang = "DELETE FROM keranjang WHERE id = '{$_POST['id_keranjang']}'";
+
+    mysqli_query($db,$sql_penjualan);
+    mysqli_query($db,$sql_penjualan_detail);
+    mysqli_query($db,$sql_hapus_keranjang);
+  }
 ?>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -84,7 +98,12 @@
                 <div class="form-group">
                   <h4><b style="color:green">Total : Rp. <?php echo number_format($total_belanja,"0",",",".") ?></b></h4>
                 </div>
-                <input type="submit" name="bayar" class="btn btn-danger" value="Bayar">
+                <form method="POST" action="">
+                  <div class="form-group">
+                    <input type="hidden" name="id_keranjang" class="form-control" value="<?php echo $_POST['id_keranjang'] ?>" >
+                    <input type="submit" name="bayar" class="btn btn-danger" value="Bayar">
+                  </div> 
+                </form>
               </div>
             </div>
             <?php } ?>

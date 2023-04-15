@@ -170,9 +170,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <?php while ($row = mysqli_fetch_array($result)) { ?>
                     <tr>
                       <td><?php echo $row['nama_barang'] ?></td>
-                      <td><?php echo number_format($row['harga'],"0",",",".") ?></</td>
+                      <td><?php echo number_format($row['harga'],"0",",",".") ?></td>
                       <td><?php echo $row['jumlah'] ?></</td>
-                      <td><?php echo number_format($row['harga']*$row['jumlah'],"0",",",".") ?></</td>
+                      <td><?php echo number_format($row['harga']*$row['jumlah'],"0",",",".") ?></td>
                       <td><a href="?batal=<?php echo $row['id'] ?>" class="btn btn-danger">Batal</a></td>
                     </tr>
                     <?php 
@@ -182,7 +182,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </tbody>
                 </table>
                 <div class="form-group">
-                  <h4><b style="color:green">Total : Rp. <?php echo number_format($total_belanja,"0",",",".") ?></b></h4>
+                  <h4><b style="color:green">Total : Rp <?php echo number_format($total_belanja,"0",",",".") ?></b></h4>
                 </div>
               </div>
             </div>
