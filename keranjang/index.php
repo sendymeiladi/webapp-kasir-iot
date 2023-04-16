@@ -125,8 +125,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
               <div class="card-body">
               <h6 class="card-title">Scan QrCode disini</h6>
-                <video></video>
-
+                <div id="video-container">
+                  <video id="qr-video"></video>
+                </div>
                 <div class="form-group">
                   <button id="stop-button" class="btn btn-secondary">Batal Scan</button>
                   <button id="start-button" class="btn btn-danger">Mulai Scan</button>
@@ -136,10 +137,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <div class="form-group">
                     <div class="row">
                       <div class="col-6">
-                        <input type="number" name="id_barang" class="form-control" minn="1" placeholder="ID Barang" required>
+                        <input type="number" name="id_barang" class="form-control" minn="1" id="hasil" placeholder="ID Barang" required>
                       </div>
                       <div class="col-6">
-                        <input type="number" name="jumlah" class="form-control" minn="1" placeholder="Jumlah Barang" required>
+                        <input type="number" name="jumlah" class="form-control" minn="1"  placeholder="Jumlah Barang" required>
                       </div>
                     </div>
                   </div>
@@ -258,6 +259,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
       "responsive": true,
     });
   });
+</script>
+
+<script src="qr-scanner/qr-scanner.umd.min.js"></script>
+<script type="module">
+  const video = document.getElementById('qr-video');
+  const hasil = document.getElementById('hasil');
+
+  function setResult(label, result){
+    console.log(result);
+    label.value = result.data;
+    qrscanner.stop();
+  }
+
+  const qrscanner = new QrScanner(video, result => setResult(hasil, result),{
+    highlightScanRegion: true,
+    highlightCodeOutline: true,
+  },);
+
+  // const qrscanner = new QrScanner(video, result => console.log('decoded qr code:', result),{ 
+  //     highlightScanRegion: true,
+  //     highlightCodeOutline: true,
+  // },);
+
+  document.getElementById('start-button').addEventListener('click',() =>{
+    qrscanner.start();
+  })
+
+  document.getElementById('stop-button').addEventListener('click',() =>{
+    qrscanner.stop();
+  })
 </script>
 </body>
 </html>
